@@ -24,8 +24,6 @@ class oracle::server {
       ensure => installed;
     "unixodbc":
       ensure => installed;
-    "git":
-      ensure => installed;
   }
 
   service {

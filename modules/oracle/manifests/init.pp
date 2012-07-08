@@ -1,9 +1,4 @@
 class oracle::server {
-  exec {
-    "/usr/bin/apt-get -y update":
-    alias => "aptUpdate",
-    timeout => 3600
-  }
 
   package {
     "ntp":
@@ -47,11 +42,6 @@ class oracle::server {
     "syslog":
       ensure => present,
       groups => ["syslog","adm"];
-  }
-
-  group {
-    "puppet":
-    ensure => present;
   }
 }
 

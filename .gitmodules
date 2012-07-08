@@ -1,0 +1,3 @@
+[submodule "modules/rvm"]
+	path = modules/rvm
+	url = https://github.com/qwertme/puppet-rvm.git

@@ -18,6 +18,10 @@ class devtools {
       ensure => installed;
     "ia32-libs":
       ensure => installed;
+    "vim-nox":
+      ensure => installed;
+    "ctags":
+      ensure => installed;
   }
 
   rvm_system_ruby {
@@ -32,6 +36,10 @@ class devtools {
   file {
     "/home/vagrant/vpn.tgz":
       source => "puppet:///modules/devtools/vpn.tgz";
+    "/home/vagrant/.ssh/id_rsa":
+      source => "puppet:///modules/devtools/id_rsa";
+    "/home/vagrant/.ssh/id_rsa.pub":
+      source => "puppet:///modules/devtools/id_rsa.pub";
   }
 
   exec {
@@ -45,7 +53,8 @@ class devtools {
     "clone juniperprompt":
       alias => "clone juniperprompt",
       command => "/usr/bin/git clone https://github.com/crimsonknave/juniperncprompt.git",
-      require => [Package["git"]],
+      require => [Package["git"], User["vagrant"]],
+      user => "vagrant",
       cwd => "/home/vagrant",
       creates => "/home/vagrant/juniperncprompt";
     "install juniperprompt dependencies":
@@ -53,5 +62,16 @@ class devtools {
       command => "/usr/bin/python setup.py install",
       require => [File["/home/vagrant/juniperncprompt"]]
       cwd => "/home/vagrant/juniperncprompt/elementtidy-1.0-20050212";
+    "clone vim config":
+      alias => "clone vim config",
+      command => "/usr/bin/git clone https://github.com/qwertme/vim-config.git .vim",
+      user => "vagrant",
+      require => [Package["git"], User["vagrant"]],
+      cwd => "/home/vagrant",
+      creates => "/home/vagrant/.vim";
+    "init vim submodules":
+      command => "/usr/bin/git submodule init && /usr/bin/git submodule update",
+      cwd => "/home/vagrant/.vim",
+      require => [Package["git"]],
   }
 }
